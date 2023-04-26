@@ -9,33 +9,35 @@
 </head>
 <body>
     <h1>Añadir Plato</h1>
+
+    <div id="center-form">
         
-        <label for="nombre">Nombre</label>
+        <label for="nombre">Nombre:</label>
         <input type="text" name="nombre" id="nombre">
         <br>
         <br>
-        <label for="url">URL</label>
+        <label for="url">URL:</label>
         <input type="text" name="url" id="url">
         <br>
         <br>
-        <label for="precio">Precio</label>
+        <label for="precio">Precio:</label>
         <input type="text" name="precio" id="precio">
         <br>
         <br>
-        <label for="desc">Descripción</label>
-        <textarea name="desc" id="desc" cols="30" rows="10"></textarea>
+        <label for="desc">Descripción:</label>
+        <textarea name="desc" id="desc" cols="30" rows="3"></textarea>
         <br>
         <br>
-        <label for="ingredients">ingredients</label>
+        <label for="ingredients">Ingredientes:</label>
         <br>
         <br>
         <div id="newIngredient"></div>
         <br>
         <br>
-        <button id="addIngredient">Add Ingredient</button>
+        <button id="addIngredient">Añadir Ingredient</button>
         <br>
         <br>
-        <label for="alergenos">Alérgenos</label>
+        <label for="alergenos">Alérgenos:</label>
         <br>
         <br>
         <input type="checkbox" id="guten">
@@ -48,13 +50,10 @@
         <label for="huevo">Huevo</label>
     <br>
     <br>
-        <button id="send">Send</button>
+        <button id="send">Guardar</button>
+        <button id="delete">Eliminar</button>
+    </div>
 
-
-  
-
-    <p id="content"></p>
-    
 
     <script src="index.js"></script>
     

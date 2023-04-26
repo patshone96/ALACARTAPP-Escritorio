@@ -1,13 +1,13 @@
 :root {
-    --main-color: #57acfc;
+    --main-color: #89C4FC;
     --highlight-color: #f9b42b;
     --main-darker-color: #292a73;
-    --main-dark-color: #3e4491;
+    --main-dark-color: #4C4E72;
     --main-darkest-color: #1a1b4b;
   }
 
 body{
-    background-color: mediumaquamarine;
+    background-image: url("background-pattern4.png");
     color: var(--main-darkest-color);
     font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }

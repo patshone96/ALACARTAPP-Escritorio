@@ -1,39 +1,84 @@
+:root {
+    --main-color: #89C4FC;
+    --highlight-color: #f9b42b;
+    --main-darker-color: #292a73;
+    --main-dark-color: #4C4E72;
+    --main-darkest-color: #1a1b4b;
+  }
+
+  #center-form{
+    padding-left: 2rem;
+  }
+
+  body{
+    background-image: url("background-pattern4.png");
+    color: var(--main-darkest-color);
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: larger;
+
+}
+
+
 label{
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+#nombre{
+    margin-left: 2rem;
+}
+
+#url{
+    margin-left: 4rem;
+}
+
+#precio{
+    margin-left: 3rem;
+}
+
+#desc{
+    margin-left: 0.3rem;
+}
+
+button{
+    background-color: var(--main-dark-color);
+    color: var(--highlight-color);
+    border-radius: 0.4rem;
+    transition: 100ms;
+    border: none;
+    padding-top: 0.2rem;
+    padding-bottom: 0.2rem;
     font-size: large;
 }
 
-
-button{
-    border-radius: 0.5rem;
-    padding: 0.2rem;
-    margin: 0.2rem;
-    background-color: rgb(170, 170, 243);
-    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-    font-size: x-large;
-    transition-delay: 100ms;
-}
-
 button:hover{
-    background-color: rgb(93, 200, 230);
-    transition-delay: 100ms;
+    background-color: var(--highlight-color);
+    color: var(--main-darkest-color);
+    transition: 100ms;
 }
 
 textarea{
     resize:none;
 }
 
+
+input[type='text']:focus{
+    background-color: var(--highlight-color);
+    outline: none;
+}
+
+
 h1{
     text-align: center;
+    color: rgb(17, 11, 11);
 }
 
-input[type='checkbox']{
-    background-color: bisque;
-
-}
 
 input[type='checkbox']:checked{
-    accent-color: rgb(108, 163, 230);
+    accent-color: var(--highlight-color);
 
 }
 
+textarea:focus{
+    background-color: var(--highlight-color);
+    outline: none;
+}

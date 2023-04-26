@@ -14,11 +14,11 @@ nodeIntegration: true,
 
 // load the html file into the window
 //win.loadFile('index.html')
-win.loadFile('sign.html')
+win.loadFile('index.html')
 win.setMenu(null); 
 
 //show the DevTools
-//win.webContents.openDevTools()
+win.webContents.openDevTools()
 }
 
 //app.on is the function in charge of launching the windows
