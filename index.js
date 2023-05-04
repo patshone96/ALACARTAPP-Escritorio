@@ -18,6 +18,48 @@ let addIn = document.getElementById("addIngredient");
 let newIn = document.getElementById("newIngredient");
 let btnSend = document.getElementById("send");
 let btnDelete = document.getElementById("delete");
+let btnUpdate= document.getElementById("update");
+let btnRead = document.getElementById("read");
+
+btnUpdate.addEventListener('click', () => {
+
+   //Unique constraint on the name
+       const collectionRef = firebase.firestore().collection('dishes');
+
+       // Use query methods to filter documents based on other field values
+       const query = collectionRef.where('name', '==', `${name}`);
+
+       let name = document.getElementById("nombre").value;
+       let desc = document.getElementById("desc").value;
+       let url = document.getElementById("url").value;
+
+
+       // Retrieve documents based on the query
+       query.get()
+         .then((querySnapshot) => {
+           querySnapshot.forEach((doc) => {
+             // Access document data
+           
+             const jsonArray = []
+              querySnapshot.docs.forEach(doc => {
+                const docData = doc.data()
+                jsonArray.push(docData)
+              })
+              const jsonObject = {data: jsonArray}
+              //const jsonString = JSON.stringify(jsonObject)
+
+
+              name = jsonObject.data[0].name
+              desc = jsonObject.data[0].description
+              url = jsonObject.data[0].image_url
+
+           });
+         })
+         .catch((error) => {
+           console.log(error); 
+         });
+
+})
 
 btnDelete.addEventListener("click", () => {
   let name = document.getElementById("nombre").value;
@@ -61,7 +103,7 @@ let ingredientCount = 0;
 addIn.addEventListener("click", () => {
   newIn.innerHTML += `<label for="ing${ingredientCount}">
     Ingrediente ${ingredientCount}:</label> 
-    <input type="text" name="ing${ingredientCount}" 
+    <input type="text" class="ing" name="ing${ingredientCount}" 
     id="ing${ingredientCount}"> <br> <br>`;
   ingredientCount++;
 });
@@ -72,11 +114,27 @@ btnSend.addEventListener("click", () => {
   let name = document.getElementById("nombre").value;
   let desc = document.getElementById("desc").value;
   let url = document.getElementById("url").value;
+  let ingredientNode = document.querySelectorAll('.ing');
+  let alergenNode = document.querySelectorAll('input[type="checkbox"]')
+  let price = Number(document.getElementById("precio").value); 
+
+  let ingredients = new Array(); 
+  let alergens = new Array(); 
+
+  ingredientNode.forEach(p => {
+    ingredients.push(p.value)
+  })
+
+  alergenNode.forEach(p => {
+    if(p.checked) alergens.push(p.id); 
+  })
+
+  console.log(alergens); 
 
   //Validate the input values
   let valid = true;
 
-  if (name === "" || desc === "" || url === "") {
+  if (name === "" || desc === "" || url === "" || ingredients.length < 1 || price === null) {
     valid = false;
   }
 
@@ -105,9 +163,12 @@ btnSend.addEventListener("click", () => {
       name: name,
       description: desc,
       image_url: url,
+      ingredients: ingredients,
+      allergens: alergens, 
+      price: price
     };
 
-    // Read data from a collection
+    // Write data on a collection
     db.collection("dishes")
       .add(data)
       .then((docRef) => {
