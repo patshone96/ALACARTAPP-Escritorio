@@ -1,5 +1,7 @@
 # DESKTOP SIDE OF THE FINAL PROJECT FOR MY IT COURSE
 
+![Application Image](https://github.com/patshone96/ALACARTAPP-Escritorio/blob/master/ALACARTAPP_FULL.png)
+
 Desktop app developed using HTML, CSS and server-side JS with Node.js. 
 
 The desktop app is rendered using the Electron module and it is combine with the firebase/ firestore modules to connect to the Real Time Database. 
