@@ -19,7 +19,7 @@ body{
 }
 
 #square{
-    
+    border: #4C4E72 solid;
     height: 100px;
     width: 250px;
     margin: 1rem;
