@@ -6,6 +6,7 @@ function createWindow(){
 let win= new BrowserWindow({
 width: 500,
 height: 400,
+icon: __dirname + "/A_ICON.png",
 webPreferences: {
 nodeIntegration: true,
       contextIsolation: false,
