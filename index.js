@@ -1,3 +1,6 @@
+const database = require("./firestore_operations")
+
+
 const firebase = require("firebase/compat/app");
 require("firebase/compat/firestore");
 
@@ -11,8 +14,10 @@ const firebaseConfig = {
 };
 
 firebase.initializeApp(firebaseConfig);
-
 const db = firebase.firestore();
+
+//let db = database.initialize()
+
 
 let addIn = document.getElementById("addIngredient");
 let newIn = document.getElementById("newIngredient");
@@ -21,17 +26,18 @@ let btnDelete = document.getElementById("delete");
 let btnUpdate= document.getElementById("update");
 let btnRead = document.getElementById("read");
 
+let name = document.getElementById("nombre");
+let desc = document.getElementById("desc");
+let url = document.getElementById("url");
+
 btnUpdate.addEventListener('click', () => {
 
+  let name = document.getElementById("nombre").value;
+
    //Unique constraint on the name
-       const collectionRef = firebase.firestore().collection('dishes');
-
-       // Use query methods to filter documents based on other field values
-       const query = collectionRef.where('name', '==', `${name}`);
-
-       let name = document.getElementById("nombre").value;
-       let desc = document.getElementById("desc").value;
-       let url = document.getElementById("url").value;
+       const collectionRef = db.collection('dishes') 
+         // Use query methods to filter documents based on other field values
+       const query = collectionRef.where('name', '==', `${name}`);   
 
 
        // Retrieve documents based on the query
@@ -43,15 +49,16 @@ btnUpdate.addEventListener('click', () => {
              const jsonArray = []
               querySnapshot.docs.forEach(doc => {
                 const docData = doc.data()
+                const id = doc.id; 
                 jsonArray.push(docData)
               })
               const jsonObject = {data: jsonArray}
               //const jsonString = JSON.stringify(jsonObject)
 
 
-              name = jsonObject.data[0].name
-              desc = jsonObject.data[0].description
-              url = jsonObject.data[0].image_url
+              name.value = jsonObject.data[0].name
+              desc.value = jsonObject.data[0].description
+              url.value = jsonObject.data[0].image_url
 
            });
          })
@@ -115,11 +122,13 @@ btnSend.addEventListener("click", () => {
   let desc = document.getElementById("desc").value;
   let url = document.getElementById("url").value;
   let ingredientNode = document.querySelectorAll('.ing');
-  let alergenNode = document.querySelectorAll('input[type="checkbox"]')
+  let alergenNode = document.querySelectorAll('.allergen'); 
+  let dietNode = document.querySelectorAll('.diet'); 
   let price = Number(document.getElementById("precio").value); 
 
   let ingredients = new Array(); 
   let alergens = new Array(); 
+  let diets = new Array(); 
 
   ingredientNode.forEach(p => {
     ingredients.push(p.value)
@@ -129,57 +138,64 @@ btnSend.addEventListener("click", () => {
     if(p.checked) alergens.push(p.id); 
   })
 
-  console.log(alergens); 
+  dietNode.forEach(p => {
+    if(p.checked) diets.push(p.id); 
+  })
+
 
   //Validate the input values
   let valid = true;
+
+  //Generate a JSON object
+  data = {
+    name: name,
+    description: desc,
+    image_url: url,
+    ingredients: ingredients,
+    allergens: alergens, 
+    price: price,
+    diet: diets
+  };
 
   if (name === "" || desc === "" || url === "" || ingredients.length < 1 || price === null) {
     valid = false;
   }
 
-  // //Unique constraint on the name
-  //      const collectionRef = firebase.firestore().collection('dishes');
+  if(valid){
+    
+    // //Unique constraint on the name
+       const collectionRef = firebase.firestore().collection('dishes');
 
-  //      // Use query methods to filter documents based on other field values
-  //      const query = collectionRef.where('name', '==', `${name}`);
+       // Use query methods to filter documents based on other field values
+       const query = collectionRef.where('name', '==', `${name}`);
 
-  //      // Retrieve documents based on the query
-  //      query.get()
-  //        .then((querySnapshot) => {
-  //          querySnapshot.forEach((doc) => {
-  //            // Access document data
-  //            alert("El nombre del plato ya se ha introducido")
-  //           valid = false;
-  //          });
-  //        })
-  //        .catch((error) => {
-  //          valid = true;
-  //        });
-
-  if (valid) {
-    //Generate a JSON object
-    data = {
-      name: name,
-      description: desc,
-      image_url: url,
-      ingredients: ingredients,
-      allergens: alergens, 
-      price: price
-    };
+       // Retrieve documents based on the query
+       query.get()
+         .then((querySnapshot) => {
+           if(querySnapshot.empty){
+            db.collection("dishes")
+            .add(data)
+            .then((docRef) => {
+              console.log("Document written with ID: ", docRef.id);
+              ingredientCount = 0;
+              newIn.innerHTML = "";
+            })
+            .catch((error) => {
+              console.error("Error adding document: ", error);
+            }); 
+           }else{
+            alert(`Ya existe un plato llamado ${name}, pruebe con un nombre distinto`)
+          } 
+          })
+         .catch((error) => {
+           console.log(error)
+         });
+        }
+  
 
     // Write data on a collection
-    db.collection("dishes")
-      .add(data)
-      .then((docRef) => {
-        console.log("Document written with ID: ", docRef.id);
-        ingredientCount = 0;
-        newIn.innerHTML = "";
-      })
-      .catch((error) => {
-        console.error("Error adding document: ", error);
-      });
-  } else {
-    alert("Error");
-  }
+    //database.writeData(data)
+
+    
+  
 });

@@ -5,7 +5,8 @@ const {app, BrowserWindow, dialog} = require('electron')
 function createWindow(){
 let win= new BrowserWindow({
 width: 500,
-height: 400,
+height: 800,
+resizable: false,
 icon: __dirname + "/A_ICON.png",
 webPreferences: {
 nodeIntegration: true,
