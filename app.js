@@ -1,5 +1,5 @@
 const {app, BrowserWindow, dialog} = require('electron')
-
+require('@electron/remote/main').initialize()
 
 // Create the browser window
 function createWindow(){
@@ -13,6 +13,8 @@ nodeIntegration: true,
       contextIsolation: false,
 }
 })
+
+require("@electron/remote/main").enable(win.webContents)
 
 // load the html file into the window
 //win.loadFile('index.html')

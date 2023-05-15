@@ -1,5 +1,5 @@
-const database = require("./firestore_operations")
-
+const database = require("./firestore_operations");
+const { dialog } = require("@electron/remote");
 
 const firebase = require("firebase/compat/app");
 require("firebase/compat/firestore");
@@ -18,55 +18,119 @@ const db = firebase.firestore();
 
 //let db = database.initialize()
 
-
 let addIn = document.getElementById("addIngredient");
 let newIn = document.getElementById("newIngredient");
 let btnSend = document.getElementById("send");
 let btnDelete = document.getElementById("delete");
-let btnUpdate= document.getElementById("update");
+let btnUpdate = document.getElementById("update");
 let btnRead = document.getElementById("read");
 
 let name = document.getElementById("nombre");
 let desc = document.getElementById("desc");
 let url = document.getElementById("url");
+let price = document.getElementById("precio");
+let ingredientNode = document.querySelectorAll(".ing");
+let alergenNode = document.querySelectorAll(".allergen");
+let dietNode = document.querySelectorAll(".diet");
 
-btnUpdate.addEventListener('click', () => {
+let ingredientCount = 0;
 
+btnUpdate.addEventListener("click", () => {
   let name = document.getElementById("nombre").value;
 
-   //Unique constraint on the name
-       const collectionRef = db.collection('dishes') 
-         // Use query methods to filter documents based on other field values
-       const query = collectionRef.where('name', '==', `${name}`);   
+  //Unique constraint on the name
+  const collectionRef = db.collection("dishes");
+  // Use query methods to filter documents based on other field values
+  const query = collectionRef.where("name", "==", `${name}`);
+
+  // Retrieve documents based on the query
+  query
+    .get()
+    .then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        // Access document data
+
+        const jsonArray = [];
+        querySnapshot.docs.forEach((doc) => {
+          const docData = doc.data();
+          const id = doc.id;
+          jsonArray.push(docData);
+        });
+        const jsonObject = { data: jsonArray };
+        //const jsonString = JSON.stringify(jsonObject)
+
+        name.value = jsonObject.data[0].name;
+        desc.value = jsonObject.data[0].description;
+        url.value = jsonObject.data[0].image_url;
+        price.value = jsonObject.data[0].price;
 
 
-       // Retrieve documents based on the query
-       query.get()
-         .then((querySnapshot) => {
-           querySnapshot.forEach((doc) => {
-             // Access document data
-           
-             const jsonArray = []
-              querySnapshot.docs.forEach(doc => {
-                const docData = doc.data()
-                const id = doc.id; 
-                jsonArray.push(docData)
-              })
-              const jsonObject = {data: jsonArray}
-              //const jsonString = JSON.stringify(jsonObject)
+        //Retrieve ingredients
+        let ingredients = new Array();
+        ingredients = jsonObject.data[0].ingredients;
+
+        ingredients.forEach((p) => {
+          newIn.innerHTML += `<label for="ing${ingredientCount}">
+    Ingrediente ${ingredientCount}:</label> 
+    <input type="text" class="ing" name="ing${ingredientCount}" 
+    id="ing${ingredientCount}" value="${p}"> <br> <br>`;
+          ingredientCount++;
+        });
+
+        //Retrieve Allergens
+        let allergens = new Array();
+        allergens = jsonObject.data[0].allergens;
+
+        alergenNode.forEach((p) => {
+          if (allergens.includes(p.id)) p.click();
+        });
 
 
-              name.value = jsonObject.data[0].name
-              desc.value = jsonObject.data[0].description
-              url.value = jsonObject.data[0].image_url
+        //Retrieve Diets
+        let diets = new Array();
+        diets = jsonObject.data[0].diet;
 
-           });
-         })
-         .catch((error) => {
-           console.log(error); 
-         });
+        dietNode.forEach((p) => {
+          if (diets.includes(p.id)) p.click();
+        });
+      });
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 
-})
+  // Retrieve documents based on the query
+  query
+    .get()
+    .then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        // Access document data
+        console.log(doc.id, "=>", doc.data());
+
+        // Get a reference to the document you want to delete by document ID
+        const documentId = doc.id;
+        const documentRef = collectionRef.doc(documentId);
+
+        // Delete the document
+        documentRef
+          .delete()
+          .then(() => {
+            //dialog.showErrorBox("Eliminado!", "Document successfully deleted!");
+            console.log("Document successfully deleted!");
+          })
+          .catch((error) => {
+            console.error("Error deleting document:", error);
+          });
+      });
+    })
+    .catch((error) => {
+      console.error("Error getting documents:", error);
+    });
+
+
+
+
+});
 
 btnDelete.addEventListener("click", () => {
   let name = document.getElementById("nombre").value;
@@ -93,6 +157,7 @@ btnDelete.addEventListener("click", () => {
         documentRef
           .delete()
           .then(() => {
+            dialog.showErrorBox("Eliminado!", "Document successfully deleted!");
             console.log("Document successfully deleted!");
           })
           .catch((error) => {
@@ -106,7 +171,7 @@ btnDelete.addEventListener("click", () => {
 });
 
 //Add new Ingredients when pressing the ADD button
-let ingredientCount = 0;
+
 addIn.addEventListener("click", () => {
   newIn.innerHTML += `<label for="ing${ingredientCount}">
     Ingrediente ${ingredientCount}:</label> 
@@ -121,27 +186,26 @@ btnSend.addEventListener("click", () => {
   let name = document.getElementById("nombre").value;
   let desc = document.getElementById("desc").value;
   let url = document.getElementById("url").value;
-  let ingredientNode = document.querySelectorAll('.ing');
-  let alergenNode = document.querySelectorAll('.allergen'); 
-  let dietNode = document.querySelectorAll('.diet'); 
-  let price = Number(document.getElementById("precio").value); 
+  let ingredientNode = document.querySelectorAll(".ing");
+  let alergenNode = document.querySelectorAll(".allergen");
+  let dietNode = document.querySelectorAll(".diet");
+  let price = Number(document.getElementById("precio").value);
 
-  let ingredients = new Array(); 
-  let alergens = new Array(); 
-  let diets = new Array(); 
+  let ingredients = new Array();
+  let alergens = new Array();
+  let diets = new Array();
 
-  ingredientNode.forEach(p => {
-    ingredients.push(p.value)
-  })
+  ingredientNode.forEach((p) => {
+    ingredients.push(p.value);
+  });
 
-  alergenNode.forEach(p => {
-    if(p.checked) alergens.push(p.id); 
-  })
+  alergenNode.forEach((p) => {
+    if (p.checked) alergens.push(p.id);
+  });
 
-  dietNode.forEach(p => {
-    if(p.checked) diets.push(p.id); 
-  })
-
+  dietNode.forEach((p) => {
+    if (p.checked) diets.push(p.id);
+  });
 
   //Validate the input values
   let valid = true;
@@ -152,50 +216,78 @@ btnSend.addEventListener("click", () => {
     description: desc,
     image_url: url,
     ingredients: ingredients,
-    allergens: alergens, 
+    allergens: alergens,
     price: price,
-    diet: diets
+    diet: diets,
   };
 
-  if (name === "" || desc === "" || url === "" || ingredients.length < 1 || price === null) {
+  if (
+    name === "" ||
+    desc === "" ||
+    url === "" ||
+    ingredients.length < 1 ||
+    price === null
+  ) {
     valid = false;
   }
 
-  if(valid){
-    
+  if (valid) {
     // //Unique constraint on the name
-       const collectionRef = firebase.firestore().collection('dishes');
+    const collectionRef = firebase.firestore().collection("dishes");
 
-       // Use query methods to filter documents based on other field values
-       const query = collectionRef.where('name', '==', `${name}`);
+    // Use query methods to filter documents based on other field values
+    const query = collectionRef.where("name", "==", `${name}`);
 
-       // Retrieve documents based on the query
-       query.get()
-         .then((querySnapshot) => {
-           if(querySnapshot.empty){
-            db.collection("dishes")
+    // Retrieve documents based on the query
+    query
+      .get()
+      .then((querySnapshot) => {
+        if (querySnapshot.empty) {
+          db.collection("dishes")
             .add(data)
             .then((docRef) => {
+              dialog.showErrorBox(
+                "Guardado!",
+                `Document written with ID: ${docRef.id}`
+              );
               console.log("Document written with ID: ", docRef.id);
+              reset();
               ingredientCount = 0;
               newIn.innerHTML = "";
             })
             .catch((error) => {
               console.error("Error adding document: ", error);
-            }); 
-           }else{
-            alert(`Ya existe un plato llamado ${name}, pruebe con un nombre distinto`)
-          } 
-          })
-         .catch((error) => {
-           console.log(error)
-         });
+            });
+        } else {
+          dialog.showErrorBox(
+            "Atención",
+            `Ya existe un plato llamado ${name}, pruebe con un nombre distinto`
+          );
         }
-  
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
 
-    // Write data on a collection
-    //database.writeData(data)
-
-    
-  
+  // Write data on a collection
+  //database.writeData(data)
 });
+
+function reset() {
+  let name = (document.getElementById("nombre").value = "");
+  let desc = (document.getElementById("desc").value = "");
+  let url = (document.getElementById("url").value = "");
+  let ingredientNode = document.querySelectorAll(".ing");
+  let alergenNode = document.querySelectorAll(".allergen");
+  let dietNode = document.querySelectorAll(".diet");
+  let price = (document.getElementById("precio").value = "");
+
+  alergenNode.forEach((p) => {
+    if (p.checked) p.click();
+  });
+
+  dietNode.forEach((p) => {
+    if (p.checked) p.click();
+  });
+}
