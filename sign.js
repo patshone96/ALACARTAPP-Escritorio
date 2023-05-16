@@ -1,8 +1,7 @@
 "use strict"
 
-import firebase from 'firebase/app';
-import './node_modules/firebase/auth/dist/index.cjs.js';
-
+const firebase = require("firebase/compat/app");
+require("firebase/compat/auth");
 
   const firebaseConfig = {
     apiKey: "AIzaSyA5EGkJrJqWXhia3d9NtQyb4B4i6XzubZE",
@@ -21,62 +20,64 @@ import './node_modules/firebase/auth/dist/index.cjs.js';
   let btnAccess = document.getElementById('access');
   
   
-  const app = initializeApp(firebaseConfig);
-  const auth = firebase.auth(); 
+  firebase.initializeApp(firebaseConfig);
+
+
 
 btnRegister.addEventListener('click', () => {
   // Sign up a new user with email and password
-auth.createUserWithEmailAndPassword(email, password)
-.then((userCredential) => {
-  // User sign-up successful
-  const user = userCredential.user;
-  console.log("User sign-up successful:", user);
-})
-.catch((error) => {
-  // Handle sign-up error
-  const errorCode = error.code;
-  const errorMessage = error.message;
-  console.error("User sign-up error:", errorCode, errorMessage);
-});
 
-})
-
-
-
-// Sign in an existing user with email and password
-auth.signInWithEmailAndPassword(email, password)
+firebase.auth().createUserWithEmailAndPassword(email, password)
   .then((userCredential) => {
-    // User sign-in successful
+    // User creation successful
     const user = userCredential.user;
-    console.log("User sign-in successful:", user);
+    console.log('User created:', user);
   })
   .catch((error) => {
-    // Handle sign-in error
+    // User creation failed
     const errorCode = error.code;
     const errorMessage = error.message;
-    console.error("User sign-in error:", errorCode, errorMessage);
+    console.error('Error creating user:', errorCode, errorMessage);
   });
 
-// Listen for authentication state changes
-auth.onAuthStateChanged((user) => {
-  if (user) {
-    // User is signed in
-    console.log("User is signed in:", user);
-  } else {
-    // User is signed out
-    console.log("User is signed out");
-  }
-});
+})
 
-// Sign out the current user
-auth.signOut()
-  .then(() => {
-    // User sign-out successful
-    console.log("User sign-out successful");
-  })
-  .catch((error) => {
-    // Handle sign-out error
-    const errorCode = error.code;
-    const errorMessage = error.message;
-    console.error("User sign-out error:", errorCode, errorMessage);
-  });
+
+
+// // Sign in an existing user with email and password
+// signInWithEmailAndPassword(email, password)
+//   .then((userCredential) => {
+//     // User sign-in successful
+//     const user = userCredential.user;
+//     console.log("User sign-in successful:", user);
+//   })
+//   .catch((error) => {
+//     // Handle sign-in error
+//     const errorCode = error.code;
+//     const errorMessage = error.message;
+//     console.error("User sign-in error:", errorCode, errorMessage);
+//   });
+
+// // Listen for authentication state changes
+// onAuthStateChanged((user) => {
+//   if (user) {
+//     // User is signed in
+//     console.log("User is signed in:", user);
+//   } else {
+//     // User is signed out
+//     console.log("User is signed out");
+//   }
+// });
+
+// // Sign out the current user
+// signOut()
+//   .then(() => {
+//     // User sign-out successful
+//     console.log("User sign-out successful");
+//   })
+//   .catch((error) => {
+//     // Handle sign-out error
+//     const errorCode = error.code;
+//     const errorMessage = error.message;
+//     console.error("User sign-out error:", errorCode, errorMessage);
+//   });

@@ -15,7 +15,7 @@
   "dependencies": {
     "@electron/remote": "^2.0.9",
     "events": "^3.3.0",
-    "firebase": "^9.6.6",
+    "firebase": "^9.22.0",
     "fs": "^0.0.1-security",
     "path": "^0.12.7",
     "rollup": "^3.21.7",

@@ -1,5 +1,5 @@
 const database = require("./firestore_operations");
-//const { dialog } = require("@electron/remote");
+const { dialog } = require("@electron/remote");
 
 const firebase = require("firebase/compat/app");
 require("firebase/compat/firestore");
