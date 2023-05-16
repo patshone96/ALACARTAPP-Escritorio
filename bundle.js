@@ -21,8 +21,6 @@ function getElectronPath () {
   }
 }
 
-
-
 var electron = getElectronPath();
 
 var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
@@ -835,7 +833,7 @@ main.enable(win.webContents);
 
 // load the html file into the window
 //win.loadFile('index.html')
-win.loadFile('index.html');
+win.loadFile('sign.html');
 win.setMenu(null); 
 
 //show the DevTools
