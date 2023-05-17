@@ -833,7 +833,7 @@ main.enable(win.webContents);
 
 // load the html file into the window
 //win.loadFile('index.html')
-win.loadFile('sign.html');
+win.loadFile('index.html');
 win.setMenu(null); 
 
 //show the DevTools

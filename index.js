@@ -1,8 +1,8 @@
-const database = require("./firestore_operations");
-const { dialog } = require("@electron/remote");
+//const database = require("./firestore_operations");
+//const { dialog } = require("@electron/remote");
 
-const firebase = require("firebase/compat/app");
-require("firebase/compat/firestore");
+//const firebase = require("firebase/app");
+//require("firebase/firestore");
 
 const firebaseConfig = {
   apiKey: "AIzaSyA5EGkJrJqWXhia3d9NtQyb4B4i6XzubZE",
@@ -246,10 +246,10 @@ btnSend.addEventListener("click", () => {
           db.collection("dishes")
             .add(data)
             .then((docRef) => {
-              dialog.showErrorBox(
-                "Guardado!",
-                `Document written with ID: ${docRef.id}`
-              );
+              // dialog.showErrorBox(
+              //   "Guardado!",
+              //   `Document written with ID: ${docRef.id}`
+              // );
               console.log("Document written with ID: ", docRef.id);
               reset();
               ingredientCount = 0;
@@ -259,10 +259,11 @@ btnSend.addEventListener("click", () => {
               console.error("Error adding document: ", error);
             });
         } else {
-          dialog.showErrorBox(
-            "Atención",
-            `Ya existe un plato llamado ${name}, pruebe con un nombre distinto`
-          );
+          alert(`Error al añadir plato ${name}`)
+          // dialog.showErrorBox(
+          //   "Atención",
+          //   `Ya existe un plato llamado ${name}, pruebe con un nombre distinto`
+          // );
         }
       })
       .catch((error) => {

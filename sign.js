@@ -1,7 +1,7 @@
 "use strict"
 
-const firebase = require("firebase/compat/app");
-require("firebase/compat/auth");
+const firebase = require("firebase/app");
+require("firebase/auth");
 
   const firebaseConfig = {
     apiKey: "AIzaSyA5EGkJrJqWXhia3d9NtQyb4B4i6XzubZE",
@@ -13,8 +13,6 @@ require("firebase/compat/auth");
     measurementId: "G-VGHL8RFBB4"
   };
 
-  let email = document.getElementById('mail').value
-  let password = document.getElementById('pass').value
 
   let btnRegister = document.getElementById('register');
   let btnAccess = document.getElementById('access');
@@ -26,6 +24,10 @@ require("firebase/compat/auth");
 
 btnRegister.addEventListener('click', () => {
   // Sign up a new user with email and password
+
+
+  let email = document.getElementById('mail').value
+  let password = document.getElementById('pass').value
 
 firebase.auth().createUserWithEmailAndPassword(email, password)
   .then((userCredential) => {
