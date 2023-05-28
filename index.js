@@ -1,6 +1,15 @@
 //const database = require("./firestore_operations");
 //const { dialog } = require("@electron/remote");
 
+const { clipboard, ipcRenderer} = require("electron");
+
+ipcRenderer.on('new-data-channel', (event, data) => {
+  // Use the received data in the new window
+  console.log(data);
+});
+
+
+
 //const firebase = require("firebase/app");
 //require("firebase/firestore");
 
@@ -24,6 +33,7 @@ let btnSend = document.getElementById("send");
 let btnDelete = document.getElementById("delete");
 let btnUpdate = document.getElementById("update");
 let btnRead = document.getElementById("read");
+let btnQR = document.getElementById("QR")
 
 let name = document.getElementById("nombre");
 let desc = document.getElementById("desc");
@@ -292,3 +302,26 @@ function reset() {
     if (p.checked) p.click();
   });
 }
+
+btnQR.addEventListener('click', () => {
+  
+    let qr = new QRCode(document.getElementById("qrcode"), {
+      text: "dishes",  // Replace with your desired text or URL
+      width: 300,                   // Adjust the width and height as per your requirements
+      height: 300,
+    });
+
+    downloadBtn.removeAttribute("disabled");
+
+})
+
+// Download QR code as an image
+let downloadBtn = document.getElementById("downloadBtn");
+downloadBtn.addEventListener("click", function() {
+  let canvas = document.getElementById("qrcode").getElementsByTagName("canvas")[0];
+  let url = canvas.toDataURL("image/png");
+  let link = document.createElement("a");
+  link.href = url;
+  link.download = "qrcode.png";
+  link.click();
+});
