@@ -1,6 +1,6 @@
 'use strict';
 
-var fs = require('fs');
+const fs = window.require('fs');
 var path = require('path');
 var events = require('events');
 
@@ -813,8 +813,10 @@ main$1.initialize;
 
 var main = main$1;
 
-const {app, BrowserWindow, dialog} = electron;
+const {app, BrowserWindow, dialog, ipcMain} = electron;
 main.initialize();
+
+// main.js
 
 // Create the browser window
 function createWindow(){
@@ -829,11 +831,33 @@ nodeIntegration: true,
 }
 });
 
+ipcMain.on('data-channel', (event, data) => {
+      // Create a new BrowserWindow with the received data
+      const newWindow = new BrowserWindow({
+        // window options
+      });
+  
+      // Load the HTML file for the new window
+      newWindow.loadFile('index.html');
+
+      newWindow.webContents.openDevTools();
+  
+      // You can also send the data to the new window using IPC
+      newWindow.webContents.on('did-finish-load', () => {
+        newWindow.webContents.send('new-data-channel', data);
+      });
+    });
+
+
+
+
+
+
 main.enable(win.webContents);
 
 // load the html file into the window
+win.loadFile('sign.html');
 //win.loadFile('index.html')
-win.loadFile('index.html');
 win.setMenu(null); 
 
 //show the DevTools

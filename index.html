@@ -8,6 +8,7 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+  <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -64,11 +65,22 @@
         <button id="send">Guardar</button>
         <button id="delete">Eliminar</button>
         <button id="update">Actualizar</button>
-        <button id="read">Revisar</button>
+        <button id="QR">Generar QR</button>
+        <button id="downloadBtn" disabled>Descargar QR</button>
+        
     </div>
+    
+    <br>
+    <br>
+    <p>QR GENERADO</p>
+
+    <div class="cent">
+        <div id="qrcode"></div>
+    </div>
+      
 
 
-    <script src="bundle.js"></script>
+    <script type="module" src="bundle.js"></script>
     <script src="index.js"></script>
     
 </body>

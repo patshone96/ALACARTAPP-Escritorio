@@ -13,5 +13,8 @@ export default {
     }),
     commonjs(),
   ],
-  external: ['firebase'], // Exclude Firebase from the bundle
+  external: ['firebase']// Exclude Firebase from the bundle
 };
+
+
+

@@ -4,7 +4,11 @@
   "description": "",
   "main": "app.js",
   "devDependencies": {
-    "electron": "^24.3.0"
+    "@rollup/plugin-commonjs": "^25.0.0",
+    "electron": "^24.3.0",
+    "rollup": "^3.23.0",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-node-resolve": "^5.2.0"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -17,9 +21,6 @@
     "events": "^3.3.0",
     "firebase": "^8.10.0",
     "fs": "^0.0.1-security",
-    "path": "^0.12.7",
-    "rollup": "^3.21.7",
-    "rollup-plugin-commonjs": "^10.1.0",
-    "rollup-plugin-node-resolve": "^5.2.0"
+    "path": "^0.12.7"
   }
 }

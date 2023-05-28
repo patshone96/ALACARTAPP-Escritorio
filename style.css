@@ -10,6 +10,25 @@
     padding-left: 2rem;
   }
 
+  #cent{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+  }
+
+  button:disabled {
+    /* Reduce opacity for a disabled appearance */
+cursor: not-allowed;
+}
+
+button:disabled:hover {
+background-color: var(--main-color);
+color: var(--main-darkest-color);
+transition: 100ms;
+
+}
+
   body{
     background-image: url("background-pattern4.png");
     color: var(--main-darkest-color);
