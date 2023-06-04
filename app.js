@@ -41,8 +41,8 @@ ipcMain.on('data-channel', (event, data) => {
 require("@electron/remote/main").enable(win.webContents)
 
 // load the html file into the window
-win.loadFile('sign.html')
-//win.loadFile('index.html')
+//win.loadFile('sign.html')
+win.loadFile('index.html')
 win.setMenu(null); 
 
 //show the DevTools
